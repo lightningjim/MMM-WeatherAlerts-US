@@ -3,7 +3,7 @@ Module.register("MMM-WeatherAlerts-US",{
     defaults: {
 		updateInterval: 10*60*1000, // 10 minutes
 		animationSpeed: 1000,
-		location: OKZ029, //Cleveland Co, Oklahoma
+		location: 'OKZ029', //Cleveland Co, Oklahoma
         text: "TO WORK SOON"
     },
 
@@ -52,9 +52,11 @@ Module.register("MMM-WeatherAlerts-US",{
 			if (this.status === 200) {
 				this.requestComplete = true;
 				this.processAlert(this.responseXML);
+				Log.log(this.name + ": GOT IT!");
 				this.updateDom(this.config.animationSpeed);
 			}
 			else {
+				Log.log(this.name + ": failed!");
 				this.failureFlag = true;
 				this.status = this.status;
 				self.updateDom(self.config.animationSpeed);
