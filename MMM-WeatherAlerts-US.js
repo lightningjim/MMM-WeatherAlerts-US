@@ -2,6 +2,7 @@ Module.register("MMM-WeatherAlerts-US",{
     // Default module config.
     defaults: {
 		updateInterval: 10*60*1000, // 10 minutes
+		animationSpeed: 1000,
 		location: OKZ029, //Cleveland Co, Oklahoma
         text: "TO WORK SOON"
     },
@@ -67,7 +68,7 @@ Module.register("MMM-WeatherAlerts-US",{
 
 	processAlerts: function (data) {
 		alerts = data.getElementsByTagName("event");
-		print alerts.length;
+		this.text = alerts.length;
 	},
 
 	scheduleUpdate: function(delay) {
