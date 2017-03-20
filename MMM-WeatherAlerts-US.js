@@ -16,7 +16,7 @@ Module.register("MMM-WeatherAlerts-US",{
 		}
         wrapper.innerHTML = this.config.text;
         return wrapper;
-    }
+    },
 
 	getScripts: function () {
 		return [
@@ -38,7 +38,7 @@ Module.register("MMM-WeatherAlerts-US",{
 		this.finishLoading();
 		Log.log(this.name + ' is loaded!');
   		callback();
-	}
+	},
 	
 	updateAlerts: function () {
 
@@ -63,12 +63,12 @@ Module.register("MMM-WeatherAlerts-US",{
 			}
 		}
 		xhttp.send();
-	},
+	}},
 
 	processAlerts: function (data) {
 		alerts = data.getElementsByTagName("event");
 		print alerts.length;
-	}
+	},
 
 	scheduleUpdate: function(delay) {
 		var nextLoad = this.config.updateInterval;
