@@ -70,7 +70,8 @@ Module.register("MMM-WeatherAlerts-US",{
 	processAlerts: function (data) {
 		alerts = data.getElementsByTagName("event");
 		alertsClean = alertsParse(alerts);
-		this.config.text = "";
+		this.config.text = alertsClean.length + " alerts";
+		Log.log(this.name + ": " + alertsClean.length + " alerts.");
 		for(i=0; i<alertsClean.length; i++)
 		{
 
