@@ -51,7 +51,7 @@ Module.register("MMM-WeatherAlerts-US",{
 			if (this.readyState === 4) {
 				if (this.status === 200) {
 					self.requestComplete = true;
-					self.processAlerts(this.responseXML);
+					self.processAlerts(this.responseText);
 					self.updateDom(self.config.animationSpeed);
 				}
 				else {
@@ -68,7 +68,8 @@ Module.register("MMM-WeatherAlerts-US",{
 	},
 
 	processAlerts: function (data) {
-		alerts = data.getElementsByTagName("event");
+		var xmlDoc = new DOMParser().parseFromString(data,'text/xml');
+		alerts = xmlDoc.getElementsByTagName("event");
 		alertsClean = alertsParse(alerts);
 		this.config.text = alertsClean.length + " alerts";
 		Log.log(this.name + ": " + alertsClean.length + " alerts.");
