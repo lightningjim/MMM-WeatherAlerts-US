@@ -37,16 +37,12 @@ function severityToVariable (severity) {
 	switch(severity) {
 		case "Extreme":
 			return severity_extreme;
-			break;
 		case "Severe":
 			return severity_severe;
-			break;
 		case "Moderate":
 			return severity_moderate;
-			break;
 		case "Minor":
 			return severity_minor;
-			break;
 		default:
 			return severity_unknown;
 	}
@@ -57,16 +53,12 @@ function severityToText (severity) {
 	switch(severity) {
 		case severity_extreme:
 			return "Extreme";
-			break;
 		case severity_severe:
 			return "Severe";
-			break;
 		case severity_moderate:
 			return "Moderate";
-			break;
 		case severity_minor:
 			return "Minor";
-			break;
 		default:
 			return "Unknown";
 	}
@@ -82,16 +74,12 @@ function urgencyToVariable (urgency) {
 	switch(urgency) {
 		case "Immediate":
 			return urgency_immediate;
-			break;
 		case "Expected":
 			return urgency_expected;
-			break;
 		case "Future":
 			return urgency_future;
-			break;
 		case "Past":
 			return urgency_past;
-			break;
 		default:
 			return urgency_unknown;
 	}
@@ -102,16 +90,12 @@ function urgencyToText (urgency) {
 	switch(urgency) {
 		case urgency_immediate:
 			return "Immediate";
-			break;
 		case urgency_expected:
 			return "Expected";
-			break;
 		case urgency_future:
 			return "Future";
-			break;
 		case urgency_past:
 			return "Past";
-			break;
 		default:
 			return "Unknown";
 	}
@@ -175,5 +159,6 @@ for (var i=0;i<alerts.length;i++)
 		document.write("</div><hr />");*/
 	}
 	alertsClean.sort(alertSort);
+	Log.log(this.name + " alerts.js:  " + alertsClean.length + " alerts.");
 	return alertsClean;
 }
