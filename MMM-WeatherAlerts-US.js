@@ -68,15 +68,24 @@ Module.register("MMM-WeatherAlerts-US",{
 	},
 
 	processAlerts: function (data) {
+		//Log.log(this.name + ": RESPONSE - " + data);
 		var xmlDoc = new DOMParser().parseFromString(data,'text/xml');
-		alerts = xmlDoc.getElementsByTagName("event");
+		//Log.log(this.name + ": DOM Parsed - " + xmlDoc);
+		alerts = xmlDoc.getElementsByTagName("entry");
+		Log.log(this.name + ": Alerts result " + alerts[0].getElementsByTagName("title")[0].childNodes[0].nodeValue);
 		alertsClean = alertsParse(alerts);
-		this.config.text = alertsClean.length + " alerts";
+		//this.config.text = alertsClean.length + " alerts";
 		Log.log(this.name + ": " + alertsClean.length + " alerts.");
-		for(i=0; i<alertsClean.length; i++)
-		{
-
-			this.config.text += alertsClean[i].type;
+		if (!alertsClean[0]) { this.config.text = "No alerts." }
+		else {
+			this.config.text = "";
+			var now = new Date;
+			for(i=0; i<alertsClean.length; i++)
+			{
+				if(alertsClean.length != i+1) {newline="<br/>";}
+				else {newline="";}
+				this.config.text += alertsClean[i].type + " until " + dateTest(alertsClean[i].expires) + newline;
+			}
 		}
 
 	},

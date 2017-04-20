@@ -1,5 +1,4 @@
 var alertsClean = [];
-var now = new Date();
 
 function Alert (aType, aStart, aStop, aStat, aCat, aUrg, aSev, aCert, aTitle, aSum, aArea, aPoly){
 
@@ -104,23 +103,35 @@ function urgencyToText (urgency) {
 function alertsParse(alerts)
 {
 
+if(alerts[0].getElementsByTagName("title")[0].childNodes[0].nodeValue == "There are no active watches, warnings or advisories") {return false;}
+else{
+
 for (var i=0;i<alerts.length;i++)
 	{ 
-		alertType = alerts[i].getElementsByTagName("cap:event")[0].childNodes[0].nodeValue;
+		//alertType = alerts[i].getElementsByTagName("cap:event")[0].childNodes[0].nodeValue;
+		alertType = alerts[i].getElementsByTagName("event")[0].childNodes[0].nodeValue;
+		//effective = new Date(alerts[i].getElementsByTagName("cap:effective")[0].childNodes[0].nodeValue);
+		effective = new Date(alerts[i].getElementsByTagName("effective")[0].childNodes[0].nodeValue);
+		//expires = new Date(alerts[i].getElementsByTagName("cap:expires")[0].childNodes[0].nodeValue);
+		expires = new Date(alerts[i].getElementsByTagName("expires")[0].childNodes[0].nodeValue);
+		//status = alerts[i].getElementsByTagName("cap:status")[0].childNodes[0].nodeValue;
+		status = alerts[i].getElementsByTagName("status")[0].childNodes[0].nodeValue;
+		//category = alerts[i].getElementsByTagName("cap:category")[0].childNodes[0].nodeValue;
+		category = alerts[i].getElementsByTagName("category")[0].childNodes[0].nodeValue;
+		//urgency = urgencyToVariable(alerts[i].getElementsByTagName("cap:urgency")[0].childNodes[0].nodeValue);
+		urgency = urgencyToVariable(alerts[i].getElementsByTagName("urgency")[0].childNodes[0].nodeValue);
+		//severity = severityToVariable(alerts[i].getElementsByTagName("cap:severity")[0].childNodes[0].nodeValue);
+		severity = severityToVariable(alerts[i].getElementsByTagName("severity")[0].childNodes[0].nodeValue);
+		//certainty = alerts[i].getElementsByTagName("cap:certainty")[0].childNodes[0].nodeValue;
+		certainty = alerts[i].getElementsByTagName("certainty")[0].childNodes[0].nodeValue;
 		title = alerts[i].getElementsByTagName("title")[0].childNodes[0].nodeValue;
 		summary = alerts[i].getElementsByTagName("summary")[0].childNodes[0].nodeValue;
-		effective = new Date(alerts[i].getElementsByTagName("cap:effective")[0].childNodes[0].nodeValue);
-		expires = new Date(alerts[i].getElementsByTagName("cap:expires")[0].childNodes[0].nodeValue);
-		status = alerts[i].getElementsByTagName("cap:status")[0].childNodes[0].nodeValue;
-		category = alerts[i].getElementsByTagName("cap:category")[0].childNodes[0].nodeValue;
-		urgency = urgencyToVariable(alerts[i].getElementsByTagName("cap:urgency")[0].childNodes[0].nodeValue);
-		severity = severityToVariable(alerts[i].getElementsByTagName("cap:severity")[0].childNodes[0].nodeValue);
-		certainty = alerts[i].getElementsByTagName("cap:certainty")[0].childNodes[0].nodeValue;
-		title = alerts[i].getElementsByTagName("title")[0].childNodes[0].nodeValue;
-		summary = alerts[i].getElementsByTagName("summary")[0].childNodes[0].nodeValue;
-		areaDesc = alerts[i].getElementsByTagName("cap:areaDesc")[0].childNodes[0].nodeValue;
-		if (typeof alerts[i].getElementsByTagName("cap:polygon")[0].childNodes[0] !== 'undefined') 
-			polygon = alerts[i].getElementsByTagName("cap:polygon")[0].childNodes[0].nodeValue;
+		//areaDesc = alerts[i].getElementsByTagName("cap:areaDesc")[0].childNodes[0].nodeValue;
+		areaDesc = alerts[i].getElementsByTagName("areaDesc")[0].childNodes[0].nodeValue;
+		//if (typeof alerts[i].getElementsByTagName("cap:polygon")[0].childNodes[0] !== 'undefined') 
+		//	polygon = alerts[i].getElementsByTagName("cap:polygon")[0].childNodes[0].nodeValue;
+		if (typeof alerts[i].getElementsByTagName("polygon")[0].childNodes[0] !== 'undefined') 
+			polygon = alerts[i].getElementsByTagName("polygon")[0].childNodes[0].nodeValue;
 		else
 			polygon = null;
 
@@ -159,6 +170,28 @@ for (var i=0;i<alerts.length;i++)
 		document.write("</div><hr />");*/
 	}
 	alertsClean.sort(alertSort);
-	Log.log(this.name + " alerts.js:  " + alertsClean.length + " alerts.");
+	//Log.log(this.name + " alerts.js:  " + alertsClean.length + " alerts.");
 	return alertsClean;
+}
+}
+
+function dowString(dayIndex) {
+  return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][dayIndex];
+}
+
+//Need to know if outputting just time, or also Day as well.
+function dateTest(date)
+{
+	//Set time to 12 Hr standard
+	var hours = date.getHours();
+	var ampm = hours >=12 ? 'pm' : 'am';
+	var hours = hours % 12;
+	hours = hours ? hours : 12;
+	minutes = date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes();
+	
+	var now = new Date();
+	//Testing Day
+	if (date.getDay() == now.getDay()) {return hours+":"+minutes+" "+ampm;}
+	else {return dowString(date.getDay())+", "+hours+":"+minutes+" "+ampm;}
+	
 }
