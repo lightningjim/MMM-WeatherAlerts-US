@@ -2,20 +2,16 @@ Module.register("MMM-WeatherAlerts-US",{
     // Default module config.
     defaults: {
 		updateInterval: 10*60*1000, // 10 minutes
-		initialLoadDelay: 2500,
+		initialLoadDelay: 250,
+		retryDelay: 2500,
 		animationSpeed: 1000,
 		location: 'OKZ029', //Cleveland Co, Oklahoma
-        text: "TO WORK SOON"
+        text: "Loading..."
     },
 
     // Override dom generator.
     getDom: function() {
         var wrapper = document.createElement("div");
-	
-		if (!this.loaded) {
-	      wrapper.innerHTML = this.translate('LOADING');
-	      return wrapper;
-		}
         wrapper.innerHTML = this.config.text;
         return wrapper;
     },
@@ -32,7 +28,7 @@ Module.register("MMM-WeatherAlerts-US",{
 	},
 
 	start: function () {
-		Log.info("Starting module: " + this.name);
+		Log.info("Starting module:D " + this.name);
 		this.scheduleUpdate(this.config.initialLoadDelay);
 	},
 
@@ -44,35 +40,43 @@ Module.register("MMM-WeatherAlerts-US",{
 	},
 	
 	updateAlerts: function () {
+		self = this;
+		retry = true;
 
-	var url = "https://alerts.weather.gov/cap/wwaatmget.php?x=" + this.config.location;
-	
-	var xhttp = new XMLHttpRequest();
-	xhttp.open("GET", url, true);
-	xhttp.onreadystatechange = function() {
-		if (this.readyState === 4) {
-			if (this.status === 200) {
-				this.requestComplete = true;
-				this.processAlert(this.responseXML);
-				Log.log(this.name + ": GOT IT!");
-				this.updateDom(this.config.animationSpeed);
+		var url = "https://alerts.weather.gov/cap/wwaatmget.php?x=" + this.config.location;
+		//Log.log(this.name +": url " + url);	
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", url, true);
+		xhttp.onreadystatechange = function() {
+			if (this.readyState === 4) {
+				if (this.status === 200) {
+					self.requestComplete = true;
+					self.processAlerts(this.responseXML);
+					self.updateDom(self.config.animationSpeed);
+				}
+				else {
+					self.failureFlag = true;
+					self.status = this.status;
+					self.updateDom(self.config.animationSpeed);
+				}
+				if (retry) {
+					self.scheduleUpdate((self.loaded) ? -1 : self.config.retryDelay);
+				}
 			}
-			else {
-				Log.log(this.name + ": failed!");
-				this.failureFlag = true;
-				this.status = this.status;
-				self.updateDom(self.config.animationSpeed);
-			}
-			if (retry) {
-				self.scheduleUpdate((self.loaded) ? -1 : self.confg.retryDelay);
-			}
-		}
+		};		
 		xhttp.send();
-	}},
+	},
 
 	processAlerts: function (data) {
 		alerts = data.getElementsByTagName("event");
 		alertsClean = alertsParse(alerts);
+		this.config.text = "";
+		for(i=0; i<alertsClean.length; i++)
+		{
+
+			this.config.text += alertsClean[i].type;
+		}
+
 	},
 
 	scheduleUpdate: function(delay) {
@@ -81,9 +85,9 @@ Module.register("MMM-WeatherAlerts-US",{
 			nextLoad = delay;
 		}
 
-		clearTimeout(this.updateTimer);
-		this.updateTimer = setTimeout(function() {
-			this.updateRequest();
+		self = this;
+		setTimeout(function() {
+			self.updateAlerts();
 		}, nextLoad);
 	}
 });
