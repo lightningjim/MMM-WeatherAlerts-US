@@ -3,10 +3,10 @@
 Example config
 
 module: 'MMM-WeatherAlerts-US',
-	position: 'bottom_left',
+    position: 'bottom_left',
     config: {
-    	location: 'OKZ029'
-	}
+        location: 'OKZ029'
+    }
 
 Find your Zone/County via http://alerts.weather.gov/
 
