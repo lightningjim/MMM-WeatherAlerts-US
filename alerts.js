@@ -175,5 +175,5 @@ for (var i=0;i<alerts.length;i++)
 		document.write("</div><hr />");*/
 	}
 	alertsClean.sort(alertSort);
-}
+	return alertsClean;
 }

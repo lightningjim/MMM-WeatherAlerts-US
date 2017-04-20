@@ -18,8 +18,8 @@ Module.register("MMM-WeatherAlerts-US",{
 
 	getScripts: function () {
 		return [
-    		'moment.js'.
-			'alert.js'
+		'alerts.js',
+    		'moment.js'
 		];
 	},
 
