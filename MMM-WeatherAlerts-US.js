@@ -68,6 +68,7 @@ Module.register("MMM-WeatherAlerts-US",{
 	},
 
 	processAlerts: function (data) {
+		alertsClean = [];
 		//Log.log(this.name + ": RESPONSE - " + data);
 		var xmlDoc = new DOMParser().parseFromString(data,'text/xml');
 		//Log.log(this.name + ": DOM Parsed - " + xmlDoc);
