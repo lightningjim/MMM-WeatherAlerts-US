@@ -1,13 +1,17 @@
 # MMM-WeatherAlerts-US
 
 Example config
-
-module: 'MMM-WeatherAlerts-US',
-    position: 'bottom_left',
-    config: {
-        location: 'OKZ029'
-    }
-
+````javascript
+modules: [
+	{
+	module: 'MMM-WeatherAlerts-US',
+	position: 'bottom_left',
+	    config: {
+	    	location: 'OKZ029'
+		}
+	}
+]
+````
 Find your Zone/County via http://alerts.weather.gov/
 
 #Concept
