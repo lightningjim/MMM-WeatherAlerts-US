@@ -23,6 +23,6 @@ Module.register("MMM-WeatherAlerts-US",{
 	},
 
 	getDom: function () {
-		return null;
+		return "YES"
 	}
 });

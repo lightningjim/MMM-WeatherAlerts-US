@@ -28,7 +28,7 @@ module.exports = NodeHelper.create({
         const alertsUrl = `https://api.weather.gov/alerts/active.atom?point=${lat},${lon}`;
         Log.info("WxAlerts: Alerts URL" + alertsUrl);
         const result = await fetch(alertsUrl);
-        const doc = new DOMParser().parseFromString(result.tex, "text/xml");
-        Log.info("WxAlerts: Parsed DOM" + doc);
+        //const doc = new DOMParser().parseFromString(result, "text/xml");
+        Log.info("WxAlerts: Parsed DOM" + result);
     }
 });
